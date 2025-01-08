@@ -1,0 +1,36 @@
+site_name: 'Time Gestão'
+repo_url: https://github.com/FGA-REQ/2024.2-Brasileirao
+repo_name: 'Brasileirão'
+features:
+  - navigation.tabs
+  - navigation.top
+  - navigation.tabs.sticky
+theme:
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Mudar para o modo claro
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Mudar para o modo escuro
+  #logo: assets/logo/logo.png
+  #favicon: assets/logo/logo.png
+  name: material
+  language: pt-BR
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Inicio: index.md
+  - Documentação:
+      - Visão do produto e projeto:
+          - Visão do Produto: doc-visao/1.visao-produto.md
