@@ -7,13 +7,13 @@ features:
   - navigation.tabs.sticky
 theme:
   palette:
-    - scheme: default
-      toggle:
-        icon: material/weather-night
-        name: Mudar para o modo claro
     - scheme: slate
       toggle:
         icon: material/weather-sunny
+        name: Mudar para o modo claro
+    - scheme: default
+      toggle:
+        icon: material/weather-night
         name: Mudar para o modo escuro
   #logo: assets/logo/logo.png
   #favicon: assets/logo/logo.png
