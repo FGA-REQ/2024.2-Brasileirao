@@ -34,4 +34,5 @@ nav:
   - Documentação:
       - Visão do produto e projeto:
           - Visão do Produto: doc-visao/1.visao-produto.md
+          - Visão Geral do Produto: doc-visao/2.visao-geral-produto.md
   - Regras de Negócio: regrasdenegocios.md
