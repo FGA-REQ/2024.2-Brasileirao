@@ -33,6 +33,8 @@ nav:
   - Inicio: index.md
   - Documentação:
       - Visão do produto e projeto:
-          - Visão do Produto: doc-visao/1.visao-produto.md
-          - Visão Geral do Produto: doc-visao/2.visao-geral-produto.md
+          - 1. Visão Geral do Produto: doc-visao/1.visao-produto.md
+          - 2. Visão Geral do Projeto: doc-visao/2.visao-geral-projeto.md
+          - 3. Processo de Desenvolvimento de Software: doc-visao/3.processo-de-desenvolvimento-de-software.md
+          - 4. Lições Aprendidas: doc-visao/4.licoes-aprendidas.md
   - Regras de Negócio: regrasdenegocios.md
