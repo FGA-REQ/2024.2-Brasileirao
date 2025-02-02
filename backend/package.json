@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "start:dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/server.ts' -e ts",
+    "migrate": "prisma db push",
     "build": "tsc && tsc-alias",
     "prepare": "cd .. && husky install backend/.husky",
     "test": "jest --passWithNoTests",
