@@ -13,3 +13,13 @@ model User {
   email String  @unique
   password String
 }
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  description String?
+  price     Float
+  stockQuantity Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

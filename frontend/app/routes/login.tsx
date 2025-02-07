@@ -42,26 +42,8 @@ export default function Login() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    try {
-      const response = await axios.post('http://localhost:3001/login', formData);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify({
-        id: response.data.id,
-        name: response.data.name,
-        email: response.data.email,
-      }));
-      navigate('/dashboard');
-    } catch (error: any) {
-      if (error.response?.data?.errors?.loginSchema) {
-        setErrors({ general: error.response.data.errors.loginSchema });
-      } else {
-        setErrors({ general: 'An error occurred. Please try again.' });
-      }
-    }
+    e.preventDefault()
+    navigate('/dashboard')
   };
 
   return (
