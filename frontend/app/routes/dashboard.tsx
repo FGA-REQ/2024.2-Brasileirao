@@ -359,6 +359,15 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          
+          <div className='p-4 border-t'>
+            <div className='flex items-center justify-between bg-gray-50 p-4 rounded-lg'>
+              <span className='text-lg font-medium text-gray-900'>Média de preços:</span>
+              <span className='text-lg text-blue-600'>
+                ${(products.reduce((acc, product) => acc + product.price, 0) / products.length).toFixed(2)}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
