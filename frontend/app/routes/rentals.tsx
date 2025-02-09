@@ -290,11 +290,11 @@ export default function RentalDashboard() {
                                     >
                                         <div className="space-y-1">
                                             <h3 className="text-lg font-medium text-gray-900">
-                                                Aluguel do produto: {rental.productId}
+                                                Aluguel do produto: {rental.product?.name}
                                             </h3>
                                             <div className="flex gap-4 text-sm text-gray-500">
-                                                <span>De: {rental.startDate}</span>
-                                                <span>Até: {rental.endDate}</span>
+                                                <span>De: {new Date(rental.startDate).toLocaleDateString('pt-BR')}</span>
+                                                <span>Até: {new Date(rental.endDate).toLocaleDateString('pt-BR')}</span>
                                             </div>
                                         </div>
                                     </Link>
