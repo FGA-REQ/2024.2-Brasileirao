@@ -18,6 +18,9 @@ export default function Dashboard() {
   // State for product deletion confirmation
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
+  // State for editing product
+  const [editing, setEditing] = useState<string | null>(null)
+
   // Fetch products on initial load
   useEffect(() => {
     const fetchProducts = async () => {
@@ -84,6 +87,48 @@ export default function Dashboard() {
     }
   }
 
+  // Handle product edit
+  const handleEditProduct = (product: Product) => {
+    setEditing(product.id)
+    setName(product.name)
+    setPrice(product.price.toString())
+    setDescription(product.description || "")
+    setStockQuantity(product.stockQuantity.toString())
+  }
+
+  // Handle updating a product
+  const handleUpdateProduct = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!name || !price || !stockQuantity) {
+      setError("Name, price, and stock quantity are required")
+      return
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:3001/products/${editing}`, {
+        name,
+        price: parseFloat(price),
+        description,
+        stockQuantity: parseInt(stockQuantity),
+      })
+
+      // Update the product in the state
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === editing ? { ...product, ...response.data } : product
+        )
+      )
+      setEditing(null) // Reset editing state
+      setName("")
+      setPrice("")
+      setDescription("")
+      setStockQuantity("")
+    } catch (error) {
+      setError("Failed to update product")
+    }
+  }
+
   if (loading) return <div>Loading...</div>
   if (error) return <div>{error}</div>
 
@@ -91,8 +136,8 @@ export default function Dashboard() {
     <div>
       <h1>Product Dashboard</h1>
 
-      {/* Form for adding a new product */}
-      <form onSubmit={handleCreateProduct}>
+      {/* Form for adding or editing a product */}
+      <form onSubmit={editing ? handleUpdateProduct : handleCreateProduct}>
         <input
           type="text"
           placeholder="Product Name"
@@ -121,7 +166,7 @@ export default function Dashboard() {
           required
         />
         <button type="submit" disabled={creating}>
-          {creating ? "Creating..." : "Add Product"}
+          {editing ? "Update Product" : creating ? "Creating..." : "Add Product"}
         </button>
       </form>
 
@@ -132,6 +177,10 @@ export default function Dashboard() {
             <Link to={`/products/${product.id}`}>
               {product.name} - ${product.price} (Stock: {product.stockQuantity})
             </Link>
+
+            {/* Edit button */}
+            <button onClick={() => handleEditProduct(product)}>Edit</button>
+
             {/* Delete button with confirmation */}
             {confirmDelete === product.id ? (
               <div>
