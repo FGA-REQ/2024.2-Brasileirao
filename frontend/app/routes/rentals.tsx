@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import type { Rental } from "../types/rental"
+import Sidebar from "../components/Sidebar"
 
 export default function RentalDashboard() {
     const [rentals, setRentals] = useState<Rental[]>([])
@@ -20,6 +21,9 @@ export default function RentalDashboard() {
 
     // State for editing rental
     const [editing, setEditing] = useState<string | null>(null)
+
+    // State for showing the form
+    const [showForm, setShowForm] = useState(false)
 
     // Fetch rentals on initial load
     useEffect(() => {
@@ -129,71 +133,175 @@ export default function RentalDashboard() {
         }
     }
 
-    if (loading) return <div>Loading...</div>
-    if (error) return <div>{error}</div>
+    if (loading) return (
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+    )
+
+    if (error) return (
+        <div className="max-w-4xl mx-auto p-4">
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 text-red-700">
+                {error}
+            </div>
+        </div>
+    )
 
     return (
-        <div>
-            <h1>Rental Dashboard</h1>
+        <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-4">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-2xl font-semibold text-gray-800">Rental Dashboard</h1>
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        {showForm ? "Cancel" : "Add Rental"}
+                    </button>
+                </div>
 
-            {/* Form for adding or editing a rental */}
-            <form onSubmit={editing ? handleUpdateRental : handleCreateRental}>
-                <input
-                    type="text"
-                    placeholder="User ID"
-                    value={userId}
-                    onChange={(e) => setUserId(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Product ID"
-                    value={productId}
-                    onChange={(e) => setProductId(e.target.value)}
-                    required
-                />
-                <input
-                    type="datetime-local"
-                    placeholder="Start Date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    required
-                />
-                <input
-                    type="datetime-local"
-                    placeholder="End Date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    required
-                />
-                <button type="submit" disabled={creating}>
-                    {editing ? "Update Rental" : creating ? "Creating..." : "Add Rental"}
-                </button>
-            </form>
-
-            {/* Rental List */}
-            <ul>
-                {rentals.map((rental) => (
-                    <li key={rental.id}>
-                        <Link to={`/rentals/${rental.id}`}>
-                            Rental: {rental.productId} for User: {rental.userId} from {rental.startDate} to {rental.endDate}
-                        </Link>
-
-                        {/* Edit button */}
-                        <button onClick={() => handleEditRental(rental)}>Edit</button>
-
-                        {/* Delete button with confirmation */}
-                        {confirmDelete === rental.id ? (
+                {showForm && (
+                    <form
+                        onSubmit={editing ? handleUpdateRental : handleCreateRental}
+                        className="bg-white p-6 rounded-lg shadow-md mb-8 space-y-4"
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <button onClick={() => handleDelete(rental.id)}>Confirm Delete</button>
-                                <button onClick={() => setConfirmDelete(null)}>Cancel</button>
+                                <label htmlFor="userId" className="block text-sm font-medium text-gray-700 mb-1">
+                                    User ID
+                                </label>
+                                <input
+                                    id="userId"
+                                    type="text"
+                                    value={userId}
+                                    onChange={(e) => setUserId(e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                             hover:border-gray-400 transition-colors"
+                                    required
+                                />
                             </div>
-                        ) : (
-                            <button onClick={() => handleDelete(rental.id)}>Delete</button>
-                        )}
-                    </li>
-                ))}
-            </ul>
+
+                            <div>
+                                <label htmlFor="productId" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Product ID
+                                </label>
+                                <input
+                                    id="productId"
+                                    type="text"
+                                    value={productId}
+                                    onChange={(e) => setProductId(e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                             hover:border-gray-400 transition-colors"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Start Date
+                                </label>
+                                <input
+                                    id="startDate"
+                                    type="datetime-local"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                             hover:border-gray-400 transition-colors"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
+                                    End Date
+                                </label>
+                                <input
+                                    id="endDate"
+                                    type="datetime-local"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                             hover:border-gray-400 transition-colors"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={creating}
+                            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg 
+                                     hover:bg-blue-600 transition-colors disabled:bg-blue-300
+                                     disabled:cursor-not-allowed"
+                        >
+                            {editing ? "Update Rental" : creating ? "Creating..." : "Add Rental"}
+                        </button>
+                    </form>
+                )}
+
+                <div className="bg-white rounded-lg shadow-md">
+                    <div className="divide-y">
+                        {rentals.map((rental) => (
+                            <div key={rental.id} className="p-4 hover:bg-gray-50">
+                                <div className="flex items-center justify-between">
+                                    <Link
+                                        to={`/rentals/${rental.id}`}
+                                        className="flex-1"
+                                    >
+                                        <div className="space-y-1">
+                                            <h3 className="text-lg font-medium text-gray-900">
+                                                Rental for Product: {rental.productId}
+                                            </h3>
+                                            <div className="flex gap-4 text-sm text-gray-500">
+                                                <span>User: {rental.userId}</span>
+                                                <span>From: {rental.startDate}</span>
+                                                <span>To: {rental.endDate}</span>
+                                            </div>
+                                        </div>
+                                    </Link>
+
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleEditRental(rental)}
+                                            className="px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors"
+                                        >
+                                            Edit
+                                        </button>
+
+                                        {confirmDelete === rental.id ? (
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleDelete(rental.id)}
+                                                    className="px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors"
+                                                >
+                                                    Confirm
+                                                </button>
+                                                <button
+                                                    onClick={() => setConfirmDelete(null)}
+                                                    className="px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleDelete(rental.id)}
+                                                className="px-3 py-1 text-sm text-red-500 hover:text-red-600 transition-colors"
+                                            >
+                                                Delete
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
