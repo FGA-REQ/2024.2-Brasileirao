@@ -152,12 +152,12 @@ export default function RentalDashboard() {
             <Sidebar />
             <div className="flex-1 p-4">
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-2xl font-semibold text-gray-800">Rental Dashboard</h1>
+                    <h1 className="text-2xl font-semibold text-gray-800">Aluguéis</h1>
                     <button
                         onClick={() => setShowForm(!showForm)}
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
                     >
-                        {showForm ? "Cancel" : "Add Rental"}
+                        {showForm ? "Cancelar" : "Adicionar Aluguel"}
                     </button>
                 </div>
 
@@ -169,7 +169,7 @@ export default function RentalDashboard() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label htmlFor="userId" className="block text-sm font-medium text-gray-700 mb-1">
-                                    User ID
+                                    Id do usuário
                                 </label>
                                 <input
                                     id="userId"
@@ -185,7 +185,7 @@ export default function RentalDashboard() {
 
                             <div>
                                 <label htmlFor="productId" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Product ID
+                                    ID do produto
                                 </label>
                                 <input
                                     id="productId"
@@ -201,7 +201,7 @@ export default function RentalDashboard() {
 
                             <div>
                                 <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Start Date
+                                    Data de início
                                 </label>
                                 <input
                                     id="startDate"
@@ -217,7 +217,7 @@ export default function RentalDashboard() {
 
                             <div>
                                 <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
-                                    End Date
+                                    Data de entrega
                                 </label>
                                 <input
                                     id="endDate"
@@ -238,7 +238,7 @@ export default function RentalDashboard() {
                                      hover:bg-blue-600 transition-colors disabled:bg-blue-300
                                      disabled:cursor-not-allowed"
                         >
-                            {editing ? "Update Rental" : creating ? "Creating..." : "Add Rental"}
+                            {editing ? "Editar aluguel" : creating ? "Criando..." : "Adicionar aluguel"}
                         </button>
                     </form>
                 )}
@@ -254,12 +254,12 @@ export default function RentalDashboard() {
                                     >
                                         <div className="space-y-1">
                                             <h3 className="text-lg font-medium text-gray-900">
-                                                Rental for Product: {rental.productId}
+                                                Aluguel do produto: {rental.productId}
                                             </h3>
                                             <div className="flex gap-4 text-sm text-gray-500">
-                                                <span>User: {rental.userId}</span>
-                                                <span>From: {rental.startDate}</span>
-                                                <span>To: {rental.endDate}</span>
+                                                <span>Usuário: {rental.userId}</span>
+                                                <span>De: {rental.startDate}</span>
+                                                <span>Até: {rental.endDate}</span>
                                             </div>
                                         </div>
                                     </Link>
@@ -269,7 +269,7 @@ export default function RentalDashboard() {
                                             onClick={() => handleEditRental(rental)}
                                             className="px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors"
                                         >
-                                            Edit
+                                            Editar
                                         </button>
 
                                         {confirmDelete === rental.id ? (
@@ -278,13 +278,13 @@ export default function RentalDashboard() {
                                                     onClick={() => handleDelete(rental.id)}
                                                     className="px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors"
                                                 >
-                                                    Confirm
+                                                    Confirmar
                                                 </button>
                                                 <button
                                                     onClick={() => setConfirmDelete(null)}
                                                     className="px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors"
                                                 >
-                                                    Cancel
+                                                    Cancelar
                                                 </button>
                                             </div>
                                         ) : (

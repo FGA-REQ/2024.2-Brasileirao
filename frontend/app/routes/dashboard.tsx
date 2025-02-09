@@ -131,12 +131,12 @@ export default function Dashboard() {
       <Sidebar />
       <div className="flex-1 p-4">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-800">Product Dashboard</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
           <button
             onClick={() => setShowForm(!showForm)}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           >
-            {showForm ? "Cancel" : "Add Product"}
+            {showForm ? "Cancelar" : "Adicionar Produto"}
           </button>
         </div>
 
@@ -148,12 +148,12 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Product Name
+                  Nome do produto
                 </label>
                 <input
                   id="name"
                   type="text"
-                  placeholder="Enter product name..."
+                  placeholder="Nome do produto..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg 
@@ -165,13 +165,13 @@ export default function Dashboard() {
 
               <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
-                  Price
+                  Preço
                 </label>
                 <input
                   id="price"
                   type="number"
                   step="0.01"
-                  placeholder="Enter price..."
+                  placeholder="Preço..."
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg 
@@ -183,12 +183,12 @@ export default function Dashboard() {
 
               <div className="md:col-span-2">
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
+                  Descrição
                 </label>
                 <input
                   id="description"
                   type="text"
-                  placeholder="Enter product description..."
+                  placeholder="Descrição..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg 
@@ -199,12 +199,12 @@ export default function Dashboard() {
 
               <div className="md:col-span-2">
                 <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">
-                  Stock Quantity
+                  Unidades disponíveis
                 </label>
                 <input
                   id="stock"
                   type="number"
-                  placeholder="Enter stock quantity..."
+                  placeholder="Quantidade disponível..."
                   value={stockQuantity}
                   onChange={(e) => setStockQuantity(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg 
@@ -221,7 +221,7 @@ export default function Dashboard() {
                        hover:bg-blue-600 transition-colors disabled:bg-blue-300
                        disabled:cursor-not-allowed"
             >
-              {editing ? "Update Product" : creating ? "Creating..." : "Add Product"}
+              {editing ? "Confirmar" : creating ? "Criando..." : "Adicionar Produto"}
             </button>
           </form>
         )}
@@ -238,8 +238,8 @@ export default function Dashboard() {
                     <div className="space-y-1">
                       <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
                       <div className="flex gap-4 text-sm text-gray-500">
-                        <span>${product.price}</span>
-                        <span>Stock: {product.stockQuantity}</span>
+                        <span>R${product.price}</span>
+                        <span>Unidades disponíveis: {product.stockQuantity}</span>
                       </div>
                     </div>
                   </Link>
@@ -249,7 +249,7 @@ export default function Dashboard() {
                       onClick={() => handleEditProduct(product)}
                       className="px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors"
                     >
-                      Edit
+                      Editar
                     </button>
 
                     {confirmDelete === product.id ? (
@@ -258,13 +258,13 @@ export default function Dashboard() {
                           onClick={() => handleDelete(product.id)}
                           className="px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors"
                         >
-                          Confirm
+                          Confirmar
                         </button>
                         <button
                           onClick={() => setConfirmDelete(null)}
                           className="px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors"
                         >
-                          Cancel
+                          Cancelar
                         </button>
                       </div>
                     ) : (
@@ -272,7 +272,7 @@ export default function Dashboard() {
                         onClick={() => handleDelete(product.id)}
                         className="px-3 py-1 text-sm text-red-500 hover:text-red-600 transition-colors"
                       >
-                        Delete
+                        Deletar
                       </button>
                     )}
                   </div>

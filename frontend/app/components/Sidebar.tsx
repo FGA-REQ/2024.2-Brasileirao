@@ -27,7 +27,7 @@ const Sidebar = () => {
                             to="/rentals"
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive("/rentals")}`}
                         >
-                            Rentals
+                            Aluguéis
                         </Link>
                     </li>
 
@@ -36,7 +36,7 @@ const Sidebar = () => {
                             to="/profile"
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive("/profile")}`}
                         >
-                            Profile
+                            Perfil
                         </Link>
                     </li>
                 </ul>
