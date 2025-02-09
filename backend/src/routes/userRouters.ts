@@ -6,5 +6,5 @@ const user = new userController()
 
 userRouters.post("/", user.create)
 userRouters.post("/login", user.login)
-
+userRouters.get("/:id", user.profile)
 export default userRouters

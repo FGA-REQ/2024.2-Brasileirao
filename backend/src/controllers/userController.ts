@@ -80,4 +80,28 @@ export default class UserController {
       return res.status(500).json({ errors: { server: "Server error" } })
     }
   }
+
+  profile = async (req: Request, res: Response) => {
+    try {
+      const userId = req.params.id
+
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      })
+
+      if (!user) {
+        return res.status(404).json({ errors: { user: "User not found" } })
+      }
+
+      return res.status(200).json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      })
+    } catch (err) {
+      console.error("Profile error:", err)
+      return res.status(500).json({ errors: { server: "Server error" } })
+    }
+  }
 }
