@@ -34,7 +34,7 @@ export default class ProductController {
   // Create a new product
   create = async (req: Request, res: Response) => {
     try {
-      const { name, price, description, stockQuantity } = req.body
+      const { name, price, description, stockQuantity, image } = req.body
 
       // Validate required fields
       if (!name || price === undefined || stockQuantity === undefined) {
@@ -49,6 +49,7 @@ export default class ProductController {
           price,
           description,
           stockQuantity,
+          image,
         },
       })
 
