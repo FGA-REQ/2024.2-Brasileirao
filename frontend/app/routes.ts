@@ -6,4 +6,5 @@ export default [
   route("/register", "routes/register.tsx"),
   route("/dashboard", "routes/dashboard.tsx"), // Add this line
   route("/products/:id", "routes/productPage.tsx"), // Add this line!
+  route("/rentals", "routes/rentals.tsx"), // Add this line!
 ] satisfies RouteConfig;
