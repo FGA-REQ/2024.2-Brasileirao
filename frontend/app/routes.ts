@@ -8,4 +8,5 @@ export default [
   route("/products/:id", "routes/productPage.tsx"), // Add this line!
   route("/rentals", "routes/rentals.tsx"), // Add this line!
   route("/rentals/:id", "routes/rentalPage.tsx"), // Add this line!
+  route("/profile/:id", "routes/profile.tsx"), // Add this line!
 ] satisfies RouteConfig;

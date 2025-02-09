@@ -7,6 +7,8 @@ const Sidebar = () => {
         return location.pathname === path ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-blue-100";
     };
 
+    const currentUserStr = localStorage.getItem('currentUser')
+    const userId = currentUserStr ? JSON.parse(currentUserStr).id : ''
     return (
         <div className="w-68 h-screen bg-gray-800 text-white p-4">
             <div className="text-2xl font-bold mb-6 text-center">Grupo Gestão</div>
@@ -33,7 +35,7 @@ const Sidebar = () => {
 
                     <li>
                         <Link
-                            to="/profile"
+                            to={`/profile/${userId}`}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive("/profile")}`}
                         >
                             Perfil
