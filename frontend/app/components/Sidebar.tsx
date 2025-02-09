@@ -1,7 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('currentUser');
+        navigate('/login');
+    };
 
     const isActive = (path: string) => {
         return location.pathname === path ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-blue-100";
@@ -13,10 +19,10 @@ const Sidebar = () => {
     const isAdmin = currentUser?.role === 'ADMIN'
 
     return (
-        <div className="w-68 h-screen bg-gray-800 text-white p-4">
+        <div className="w-68 h-screen bg-gray-800 text-white p-4 flex flex-col">
             <div className="text-2xl font-bold mb-6 text-center">Grupo Gestão</div>
 
-            <nav>
+            <nav className="flex-1">
                 <ul className="space-y-4">
                     <li>
                         <Link
@@ -48,6 +54,13 @@ const Sidebar = () => {
                     </li>
                 </ul>
             </nav>
+
+            <button
+                onClick={handleLogout}
+                className="w-60 px-4 py-2 mt-auto text-white bg-red-500 hover:bg-red-700 rounded-lg transition-colors"
+            >
+                Sair
+            </button>
         </div>
     );
 };
