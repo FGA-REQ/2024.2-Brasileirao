@@ -315,8 +315,8 @@ export default function Dashboard() {
                         {product.name}
                       </h3>
                       <div className='flex gap-4 text-sm text-gray-500'>
-                        <span>${product.price}</span>
-                        <span>Stock: {product.stockQuantity}</span>
+                        <span>R${product.price}</span>
+                        <span>Quanditdade disponível: {product.stockQuantity}</span>
                       </div>
                     </div>
                   </Link>
@@ -377,7 +377,7 @@ export default function Dashboard() {
             <div className='flex items-center justify-between bg-gray-50 p-4 rounded-lg'>
               <span className='text-lg font-medium text-gray-900'>Média de preços:</span>
               <span className='text-lg text-blue-600'>
-                ${(products.reduce((acc, product) => acc + product.price, 0) / products.length).toFixed(2)}
+                R${(products.reduce((acc, product) => acc + product.price, 0) / products.length).toFixed(2)}
               </span>
             </div>
           </div>
