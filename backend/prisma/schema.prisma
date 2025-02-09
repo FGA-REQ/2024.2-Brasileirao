@@ -29,19 +29,26 @@ model Product {
 }
 
 model Rental {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   userId      String
   productId   String
   startDate   DateTime
   endDate     DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      RentalStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  user        User     @relation(fields: [userId], references: [id])
-  product     Product  @relation(fields: [productId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  product     Product      @relation(fields: [productId], references: [id])
 }
 
 enum Role {
   ADMIN
   CLIENT
+}
+
+enum RentalStatus {
+  PENDING
+  ACTIVE
+  FINISHED
 }
