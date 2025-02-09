@@ -9,6 +9,7 @@ type Product = {
     price: number;
     stockQuantity: number;
     createdAt: string;
+    image?: string; // Add this line
 };
 
 export default function ProductPage() {
@@ -67,6 +68,17 @@ export default function ProductPage() {
             </div>
 
             <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+                {product.image && (
+                    <div className="flex justify-center mb-6">
+                        <img 
+                            src={product.image} 
+                            alt={product.name}
+                            className="max-w-full h-auto rounded-lg shadow-md"
+                            style={{ maxHeight: '400px' }}
+                        />
+                    </div>
+                )}
+                
                 <div className="flex justify-between items-center pb-4 border-b">
                     <span className="text-2xl font-bold text-gray-900">
                         R${product.price}
