@@ -12,7 +12,6 @@ export default function RentalDashboard() {
     const [error, setError] = useState("")
 
     // State for new rental form
-    const [userId, setUserId] = useState("")
     const [productId, setProductId] = useState("")
     const [startDate, setStartDate] = useState("")
     const [endDate, setEndDate] = useState("")
@@ -51,8 +50,16 @@ export default function RentalDashboard() {
     const handleCreateRental = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (!userId || !productId || !startDate || !endDate) {
-            setError("User ID, product ID, start date, and end date are required")
+        // Get current user from localStorage
+        const currentUserStr = localStorage.getItem('currentUser')
+        if (!currentUserStr) {
+            setError("User not logged in")
+            return
+        }
+        const currentUser = JSON.parse(currentUserStr)
+
+        if (!productId || !startDate || !endDate) {
+            setError("Product ID, start date, and end date are required")
             return
         }
 
@@ -60,19 +67,17 @@ export default function RentalDashboard() {
         setError("")
 
         try {
-            // Format the dates to include seconds and timezone
             const formattedStartDate = new Date(startDate).toISOString()
             const formattedEndDate = new Date(endDate).toISOString()
 
             const response = await axios.post("http://localhost:3001/rentals", {
-                userId,
+                userId: currentUser.id, // Use the logged-in user's ID
                 productId,
                 startDate: formattedStartDate,
                 endDate: formattedEndDate,
             })
 
             setRentals([...rentals, response.data])
-            setUserId("")
             setProductId("")
             setStartDate("")
             setEndDate("")
@@ -104,29 +109,35 @@ export default function RentalDashboard() {
     // Handle rental edit
     const handleEditRental = (rental: Rental) => {
         setEditing(rental.id)
-        setUserId(rental.userId)
         setProductId(rental.productId)
         setStartDate(rental.startDate)
         setEndDate(rental.endDate)
-        setShowForm(true) // Show the form when editing a rental
+        setShowForm(true)
     }
 
     // Handle updating a rental
     const handleUpdateRental = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (!userId || !productId || !startDate || !endDate) {
-            setError("User ID, product ID, start date, and end date are required")
+        // Get current user from localStorage
+        const currentUserStr = localStorage.getItem('currentUser')
+        if (!currentUserStr) {
+            setError("User not logged in")
+            return
+        }
+        const currentUser = JSON.parse(currentUserStr)
+
+        if (!productId || !startDate || !endDate) {
+            setError("Product ID, start date, and end date are required")
             return
         }
 
         try {
-            // Format the dates to include seconds and timezone
             const formattedStartDate = new Date(startDate).toISOString()
             const formattedEndDate = new Date(endDate).toISOString()
 
             const response = await axios.put(`http://localhost:3001/rentals/${editing}`, {
-                userId,
+                userId: currentUser.id, // Use the logged-in user's ID
                 productId,
                 startDate: formattedStartDate,
                 endDate: formattedEndDate,
@@ -139,7 +150,6 @@ export default function RentalDashboard() {
                 )
             )
             setEditing(null) // Reset editing state
-            setUserId("")
             setProductId("")
             setStartDate("")
             setEndDate("")
@@ -183,22 +193,6 @@ export default function RentalDashboard() {
                         className="bg-white p-6 rounded-lg shadow-md mb-8 space-y-4"
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="userId" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Id do usuário
-                                </label>
-                                <input
-                                    id="userId"
-                                    type="text"
-                                    value={userId}
-                                    onChange={(e) => setUserId(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                                             hover:border-gray-400 transition-colors"
-                                    required
-                                />
-                            </div>
-
                             <div>
                                 <label htmlFor="productId" className="block text-sm font-medium text-gray-700 mb-1">
                                     Produto
@@ -279,7 +273,6 @@ export default function RentalDashboard() {
                                                 Aluguel do produto: {rental.productId}
                                             </h3>
                                             <div className="flex gap-4 text-sm text-gray-500">
-                                                <span>Usuário: {rental.userId}</span>
                                                 <span>De: {rental.startDate}</span>
                                                 <span>Até: {rental.endDate}</span>
                                             </div>
