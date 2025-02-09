@@ -17,6 +17,7 @@ export default function ProductPage() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [rentalDays, setRentalDays] = useState<number>(1);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -86,6 +87,32 @@ export default function ProductPage() {
                     <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
                         {product.stockQuantity} unidades disponíveis
                     </span>
+                </div>
+
+                {/* Add rental simulation section */}
+                <div className="border-t pt-4">
+                    <h2 className="text-lg font-medium text-gray-800 mb-3">Simular Aluguel</h2>
+                    <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                            <label htmlFor="rentalDays" className="block text-sm font-medium text-gray-700 mb-1">
+                                Duração (dias)
+                            </label>
+                            <input
+                                type="number"
+                                id="rentalDays"
+                                min="1"
+                                value={rentalDays}
+                                onChange={(e) => setRentalDays(Math.max(1, parseInt(e.target.value) || 1))}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <div className="text-sm font-medium text-gray-700 mb-1">Valor Total</div>
+                            <div className="text-xl font-bold text-green-600">
+                                R${(product.price * rentalDays).toFixed(2)}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="space-y-4 pt-4">
