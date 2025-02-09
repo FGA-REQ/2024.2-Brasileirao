@@ -42,8 +42,25 @@ export default function Login() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    navigate('/dashboard')
+    e.preventDefault();
+
+    if (!validateForm()) return; // Validate form before submitting
+
+    try {
+      const response = await axios.post('http://localhost:3001/user/login', formData);
+
+      // Store the token in localStorage or context
+      localStorage.setItem('token', response.data.token);
+
+      // Redirect to the dashboard
+      navigate('/dashboard');
+    } catch (error: any) {
+      if (error.response && error.response.data.errors) {
+        setErrors({ general: error.response.data.errors.loginSchema || "Invalid credentials" });
+      } else {
+        setErrors({ general: "An unexpected error occurred. Please try again." });
+      }
+    }
   };
 
   return (
