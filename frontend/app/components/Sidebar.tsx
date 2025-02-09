@@ -8,7 +8,10 @@ const Sidebar = () => {
     };
 
     const currentUserStr = localStorage.getItem('currentUser')
-    const userId = currentUserStr ? JSON.parse(currentUserStr).id : ''
+    const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null
+    const userId = currentUser ? currentUser.id : ''
+    const isAdmin = currentUser?.role === 'ADMIN'
+
     return (
         <div className="w-68 h-screen bg-gray-800 text-white p-4">
             <div className="text-2xl font-bold mb-6 text-center">Grupo Gestão</div>
@@ -24,14 +27,16 @@ const Sidebar = () => {
                         </Link>
                     </li>
 
-                    <li>
-                        <Link
-                            to="/rentals"
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive("/rentals")}`}
-                        >
-                            Aluguéis
-                        </Link>
-                    </li>
+                    {isAdmin && (
+                        <li>
+                            <Link
+                                to="/rentals"
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive("/rentals")}`}
+                            >
+                                Aluguéis
+                            </Link>
+                        </li>
+                    )}
 
                     <li>
                         <Link
