@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import type { Product } from "./products";
+import Sidebar from "../components/Sidebar";
 
 export default function Dashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -126,156 +127,159 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">Product Dashboard</h1>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          {showForm ? "Cancel" : "Add Product"}
-        </button>
-      </div>
-
-      {showForm && (
-        <form
-          onSubmit={editing ? handleUpdateProduct : handleCreateProduct}
-          className="bg-white p-6 rounded-lg shadow-md mb-8 space-y-4"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Product Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Enter product name..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                         hover:border-gray-400 transition-colors"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
-                Price
-              </label>
-              <input
-                id="price"
-                type="number"
-                step="0.01"
-                placeholder="Enter price..."
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                         hover:border-gray-400 transition-colors"
-                required
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <input
-                id="description"
-                type="text"
-                placeholder="Enter product description..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                         hover:border-gray-400 transition-colors"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">
-                Stock Quantity
-              </label>
-              <input
-                id="stock"
-                type="number"
-                placeholder="Enter stock quantity..."
-                value={stockQuantity}
-                onChange={(e) => setStockQuantity(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                         hover:border-gray-400 transition-colors"
-                required
-              />
-            </div>
-          </div>
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-1 p-4">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-semibold text-gray-800">Product Dashboard</h1>
           <button
-            type="submit"
-            disabled={creating}
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg 
-                     hover:bg-blue-600 transition-colors disabled:bg-blue-300
-                     disabled:cursor-not-allowed"
+            onClick={() => setShowForm(!showForm)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           >
-            {editing ? "Update Product" : creating ? "Creating..." : "Add Product"}
+            {showForm ? "Cancel" : "Add Product"}
           </button>
-        </form>
-      )}
+        </div>
 
-      <div className="bg-white rounded-lg shadow-md">
-        <div className="divide-y">
-          {products.map((product) => (
-            <div key={product.id} className="p-4 hover:bg-gray-50">
-              <div className="flex items-center justify-between">
-                <Link
-                  to={`/products/${product.id}`}
-                  className="flex-1"
-                >
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-                    <div className="flex gap-4 text-sm text-gray-500">
-                      <span>${product.price}</span>
-                      <span>Stock: {product.stockQuantity}</span>
-                    </div>
-                  </div>
-                </Link>
+        {showForm && (
+          <form
+            onSubmit={editing ? handleUpdateProduct : handleCreateProduct}
+            className="bg-white p-6 rounded-lg shadow-md mb-8 space-y-4"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Product Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Enter product name..."
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           hover:border-gray-400 transition-colors"
+                  required
+                />
+              </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEditProduct(product)}
-                    className="px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors"
-                  >
-                    Edit
-                  </button>
+              <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+                  Price
+                </label>
+                <input
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  placeholder="Enter price..."
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           hover:border-gray-400 transition-colors"
+                  required
+                />
+              </div>
 
-                  {confirmDelete === product.id ? (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleDelete(product.id)}
-                        className="px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors"
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        onClick={() => setConfirmDelete(null)}
-                        className="px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => handleDelete(product.id)}
-                      className="px-3 py-1 text-sm text-red-500 hover:text-red-600 transition-colors"
-                    >
-                      Delete
-                    </button>
-                  )}
-                </div>
+              <div className="md:col-span-2">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <input
+                  id="description"
+                  type="text"
+                  placeholder="Enter product description..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           hover:border-gray-400 transition-colors"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">
+                  Stock Quantity
+                </label>
+                <input
+                  id="stock"
+                  type="number"
+                  placeholder="Enter stock quantity..."
+                  value={stockQuantity}
+                  onChange={(e) => setStockQuantity(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           hover:border-gray-400 transition-colors"
+                  required
+                />
               </div>
             </div>
-          ))}
+            <button
+              type="submit"
+              disabled={creating}
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg 
+                       hover:bg-blue-600 transition-colors disabled:bg-blue-300
+                       disabled:cursor-not-allowed"
+            >
+              {editing ? "Update Product" : creating ? "Creating..." : "Add Product"}
+            </button>
+          </form>
+        )}
+
+        <div className="bg-white rounded-lg shadow-md">
+          <div className="divide-y">
+            {products.map((product) => (
+              <div key={product.id} className="p-4 hover:bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <Link
+                    to={`/products/${product.id}`}
+                    className="flex-1"
+                  >
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
+                      <div className="flex gap-4 text-sm text-gray-500">
+                        <span>${product.price}</span>
+                        <span>Stock: {product.stockQuantity}</span>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditProduct(product)}
+                      className="px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors"
+                    >
+                      Edit
+                    </button>
+
+                    {confirmDelete === product.id ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleDelete(product.id)}
+                          className="px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors"
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          onClick={() => setConfirmDelete(null)}
+                          className="px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="px-3 py-1 text-sm text-red-500 hover:text-red-600 transition-colors"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
