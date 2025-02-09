@@ -2,10 +2,12 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import type { Rental } from "../types/rental"
+import type { Product as ProductType } from './products';
 import Sidebar from "../components/Sidebar"
 
 export default function RentalDashboard() {
     const [rentals, setRentals] = useState<Rental[]>([])
+    const [products, setProducts] = useState<ProductType[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
 
@@ -27,18 +29,22 @@ export default function RentalDashboard() {
 
     // Fetch rentals on initial load
     useEffect(() => {
-        const fetchRentals = async () => {
+        const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/rentals")
-                setRentals(response.data)
+                const [rentalsResponse, productsResponse] = await Promise.all([
+                    axios.get("http://localhost:3001/rentals"),
+                    axios.get("http://localhost:3001/products")
+                ])
+                setRentals(rentalsResponse.data)
+                setProducts(productsResponse.data)
             } catch (error) {
-                setError("Failed to load rentals")
+                setError("Failed to load data")
             } finally {
                 setLoading(false)
             }
         }
 
-        fetchRentals()
+        fetchData()
     }, [])
 
     // Handle the creation of a new rental
@@ -54,11 +60,15 @@ export default function RentalDashboard() {
         setError("")
 
         try {
+            // Format the dates to include seconds and timezone
+            const formattedStartDate = new Date(startDate).toISOString()
+            const formattedEndDate = new Date(endDate).toISOString()
+
             const response = await axios.post("http://localhost:3001/rentals", {
                 userId,
                 productId,
-                startDate,
-                endDate,
+                startDate: formattedStartDate,
+                endDate: formattedEndDate,
             })
 
             setRentals([...rentals, response.data])
@@ -110,11 +120,15 @@ export default function RentalDashboard() {
         }
 
         try {
+            // Format the dates to include seconds and timezone
+            const formattedStartDate = new Date(startDate).toISOString()
+            const formattedEndDate = new Date(endDate).toISOString()
+
             const response = await axios.put(`http://localhost:3001/rentals/${editing}`, {
                 userId,
                 productId,
-                startDate,
-                endDate,
+                startDate: formattedStartDate,
+                endDate: formattedEndDate,
             })
 
             // Update the rental in the state
@@ -185,18 +199,24 @@ export default function RentalDashboard() {
 
                             <div>
                                 <label htmlFor="productId" className="block text-sm font-medium text-gray-700 mb-1">
-                                    ID do produto
+                                    Produto
                                 </label>
-                                <input
+                                <select
                                     id="productId"
-                                    type="text"
                                     value={productId}
                                     onChange={(e) => setProductId(e.target.value)}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg 
                                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                                              hover:border-gray-400 transition-colors"
                                     required
-                                />
+                                >
+                                    <option value="">Selecione um produto</option>
+                                    {products.map((product) => (
+                                        <option key={product.id} value={product.id}>
+                                            {product.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div>
