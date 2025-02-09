@@ -32,12 +32,12 @@ export default function Dashboard() {
     fetchProducts();
   }, []);
 
-  const convertBase64 = (file: any) => {
+  const convertBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        resolve(fileReader.result);
+        resolve(fileReader.result as string);
       };
       fileReader.onerror = (error) => {
         reject(error);
@@ -45,9 +45,10 @@ export default function Dashboard() {
     });
   };
 
-  const handleFileRead = async (event: any) => {
-    const file = event.target.files[0];
-    const base64 = (await convertBase64(file)) || null;
+  const handleFileRead = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const base64 = await convertBase64(file);
     setInputImage(base64);
   };
 
