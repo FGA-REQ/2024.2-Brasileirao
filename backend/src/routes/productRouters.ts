@@ -6,5 +6,6 @@ const product = new productController()
 
 productRouters.get("/", product.getAll)
 productRouters.post("/", product.create) // Add this line!
+productRouters.get("/:id", product.getOne) // Add this route!
 
 export default productRouters

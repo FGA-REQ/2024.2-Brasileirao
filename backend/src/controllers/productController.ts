@@ -11,17 +11,33 @@ export default class ProductController {
     }
   }
 
+  getOne = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params
+      const product = await prisma.product.findUnique({ where: { id } })
+
+      if (!product) {
+        return res
+          .status(404)
+          .json({ errors: { message: "Product not found" } })
+      }
+
+      res.status(200).json(product)
+    } catch (err) {
+      console.error("Error fetching product:", err)
+      res.status(500).json({ errors: { server: "Server error" } })
+    }
+  }
+
   create = async (req: Request, res: Response) => {
     try {
       const { name, price, description, stockQuantity } = req.body
 
       // Validate required fields
       if (!name || price === undefined || stockQuantity === undefined) {
-        return res
-          .status(400)
-          .json({
-            errors: { message: "Name, price, and stockQuantity are required" },
-          })
+        return res.status(400).json({
+          errors: { message: "Name, price, and stockQuantity are required" },
+        })
       }
 
       const product = await prisma.product.create({

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import { Link } from "react-router-dom"
 import type { Product } from "./products" // Type-only import
 
 export default function Dashboard() {
@@ -104,7 +105,9 @@ export default function Dashboard() {
       <ul>
         {products.map((product) => (
           <li key={product.id}>
-            {product.name} - ${product.price} (Stock: {product.stockQuantity})
+            <Link to={`/products/${product.id}`}>
+              {product.name} - ${product.price} (Stock: {product.stockQuantity})
+            </Link>
           </li>
         ))}
       </ul>

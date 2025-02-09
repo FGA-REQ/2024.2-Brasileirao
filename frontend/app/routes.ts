@@ -5,4 +5,5 @@ export default [
   route("/login", "routes/login.tsx"), // Defines "/login"
   route("/register", "routes/register.tsx"),
   route("/dashboard", "routes/dashboard.tsx"), // Add this line
+  route("/products/:id", "routes/productPage.tsx"), // Add this line!
 ] satisfies RouteConfig;
