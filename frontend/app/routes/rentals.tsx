@@ -108,6 +108,7 @@ export default function RentalDashboard() {
         setProductId(rental.productId)
         setStartDate(rental.startDate)
         setEndDate(rental.endDate)
+        setShowForm(true) // Show the form when editing a rental
     }
 
     // Handle updating a rental
@@ -142,6 +143,7 @@ export default function RentalDashboard() {
             setProductId("")
             setStartDate("")
             setEndDate("")
+            setShowForm(false) // Hide the form after updating
         } catch (error) {
             setError("Failed to update rental")
         }
