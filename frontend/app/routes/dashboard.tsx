@@ -18,7 +18,14 @@ export default function Dashboard() {
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
 
+  // Add this near the top with other state declarations
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Add this in useEffect
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    setIsAdmin(currentUser.role === 'ADMIN');
+
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3001/products');
@@ -163,12 +170,14 @@ export default function Dashboard() {
           <h1 className='text-2xl font-semibold text-gray-800'>
             Product Dashboard
           </h1>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'
-          >
-            {showForm ? 'Cancel' : 'Add Product'}
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'
+            >
+              {showForm ? 'Cancel' : 'Add Product'}
+            </button>
+          )}
         </div>
 
         {showForm && (
@@ -324,35 +333,39 @@ export default function Dashboard() {
                       </svg>
                       Entrar em contato
                     </a>
-                    <button
-                      onClick={() => handleEditProduct(product)}
-                      className='px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors'
-                    >
-                      Editar
-                    </button>
+                    {isAdmin && (
+                      <>
+                        <button
+                          onClick={() => handleEditProduct(product)}
+                          className='px-3 py-1 text-sm text-blue-500 hover:text-blue-600 transition-colors'
+                        >
+                          Editar
+                        </button>
 
-                    {confirmDelete === product.id ? (
-                      <div className='flex gap-2'>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className='px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors'
-                        >
-                          Confirmar
-                        </button>
-                        <button
-                          onClick={() => setConfirmDelete(null)}
-                          className='px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors'
-                        >
-                          Cancelar
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => handleDelete(product.id)}
-                        className='px-3 py-1 text-sm text-red-500 hover:text-red-600 transition-colors'
-                      >
-                        Deletar
-                      </button>
+                        {confirmDelete === product.id ? (
+                          <div className='flex gap-2'>
+                            <button
+                              onClick={() => handleDelete(product.id)}
+                              className='px-3 py-1 text-sm text-green-500 hover:text-green-600 transition-colors'
+                            >
+                              Confirmar
+                            </button>
+                            <button
+                              onClick={() => setConfirmDelete(null)}
+                              className='px-3 py-1 text-sm text-gray-500 hover:text-gray-600 transition-colors'
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => handleDelete(product.id)}
+                            className='px-3 py-1 text-sm text-red-500 hover:text-red-600 transition-colors'
+                          >
+                            Deletar
+                          </button>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
