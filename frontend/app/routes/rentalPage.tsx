@@ -82,7 +82,10 @@ export default function RentalPage() {
                         <p className="text-gray-600">Product ID: {rental.product.id}</p>
                     </div>
                     <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                        ${rental.product.price}
+                        ${(
+                            rental.product.price *
+                            ((new Date(rental.endDate) - new Date(rental.startDate)) / (1000 * 60 * 60 * 24))
+                        ).toFixed(2)}
                     </span>
                 </div>
 
