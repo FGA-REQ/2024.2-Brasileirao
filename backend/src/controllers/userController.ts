@@ -8,6 +8,22 @@ import { userSchema } from "@/zodSchemas/user.zod"
 import { fromZodError } from "zod-validation-error"
 
 export default class UserController {
+  getAll = async (req: Request, res: Response) => {
+    try {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          name: true,
+        },
+      })
+
+      return res.status(200).json(users)
+    } catch (err) {
+      console.error("Get all users error:", err)
+      return res.status(500).json({ errors: { server: "Server error" } })
+    }
+  }
+
   create = async (req: Request, res: Response) => {
     try {
       const data = userSchema.parse(req.body)
