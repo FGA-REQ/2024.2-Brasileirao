@@ -74,6 +74,7 @@ export default class UserController {
         name: user.name,
         email: user.email,
         token,
+        role: user.role,
       })
     } catch (err) {
       console.error("Login error:", err) // Debug log
@@ -107,7 +108,7 @@ export default class UserController {
 
   changeRole = async (req: Request, res: Response) => {
     try {
-      const { userId } = req.body
+      const userId = req.params.id
 
       const user = await prisma.user.findUnique({
         where: { id: userId },

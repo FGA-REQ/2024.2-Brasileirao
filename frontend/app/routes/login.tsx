@@ -54,7 +54,8 @@ export default function Login() {
       localStorage.setItem('currentUser', JSON.stringify({
         id: response.data.id,
         name: response.data.name,
-        email: response.data.email
+        email: response.data.email,
+        role: response.data.role
       })); // Store user data
 
       // Redirect to the dashboard
