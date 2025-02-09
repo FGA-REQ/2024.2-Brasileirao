@@ -15,6 +15,10 @@ export default function Dashboard() {
   const [stockQuantity, setStockQuantity] = useState("")
   const [creating, setCreating] = useState(false)
 
+  // State for product deletion confirmation
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
+
+  // Fetch products on initial load
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -30,6 +34,7 @@ export default function Dashboard() {
     fetchProducts()
   }, [])
 
+  // Handle the creation of a new product
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -58,6 +63,24 @@ export default function Dashboard() {
       setError("Failed to create product")
     } finally {
       setCreating(false)
+    }
+  }
+
+  // Handle product deletion
+  const handleDelete = async (id: string) => {
+    if (confirmDelete !== id) {
+      setConfirmDelete(id)
+      return
+    }
+
+    try {
+      // Send DELETE request to backend
+      await axios.delete(`http://localhost:3001/products/${id}`)
+      // Remove the product from the state after deletion
+      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id))
+      setConfirmDelete(null) // Reset the confirmation state
+    } catch (error) {
+      setError("Failed to delete product")
     }
   }
 
@@ -102,12 +125,22 @@ export default function Dashboard() {
         </button>
       </form>
 
+      {/* Product List */}
       <ul>
         {products.map((product) => (
           <li key={product.id}>
             <Link to={`/products/${product.id}`}>
               {product.name} - ${product.price} (Stock: {product.stockQuantity})
             </Link>
+            {/* Delete button with confirmation */}
+            {confirmDelete === product.id ? (
+              <div>
+                <button onClick={() => handleDelete(product.id)}>Confirm Delete</button>
+                <button onClick={() => setConfirmDelete(null)}>Cancel</button>
+              </div>
+            ) : (
+              <button onClick={() => handleDelete(product.id)}>Delete</button>
+            )}
           </li>
         ))}
       </ul>

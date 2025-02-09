@@ -55,4 +55,22 @@ export default class ProductController {
       res.status(500).json({ errors: { server: "Server error" } })
     }
   }
+
+  delete = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params
+
+      // Delete the product with the given id
+      const deletedProduct = await prisma.product.delete({
+        where: {
+          id,
+        },
+      })
+
+      res.status(200).json(deletedProduct) // Respond with the deleted product
+    } catch (err) {
+      console.error("Error deleting product:", err)
+      res.status(500).json({ errors: { server: "Server error" } })
+    }
+  }
 }
