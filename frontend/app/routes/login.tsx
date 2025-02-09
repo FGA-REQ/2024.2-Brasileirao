@@ -49,8 +49,13 @@ export default function Login() {
     try {
       const response = await axios.post('http://localhost:3001/user/login', formData);
 
-      // Store the token in localStorage or context
-      localStorage.setItem('token', response.data.token);
+      // Store the token and user data in localStorage
+      localStorage.setItem('token', response.data.token);  // Store the JWT token
+      localStorage.setItem('currentUser', JSON.stringify({
+        id: response.data.id,
+        name: response.data.name,
+        email: response.data.email
+      })); // Store user data
 
       // Redirect to the dashboard
       navigate('/dashboard');
