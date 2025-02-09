@@ -6,7 +6,27 @@ export default class ProductController {
   getAll = async (req: Request, res: Response) => {
     try {
       const products = await prisma.product.findMany()
-      res.status(200).json(products)
+
+      // Fetch the available quantity for each product
+      const productsWithAvailableQuantity = await Promise.all(
+        products.map(async (product) => {
+          const activeRentalsCount = await prisma.rental.count({
+            where: {
+              productId: product.id,
+              status: "ACTIVE",
+            },
+          })
+
+          const availableQuantity = product.stockQuantity - activeRentalsCount
+
+          return {
+            ...product,
+            availableQuantity,
+          }
+        }),
+      )
+
+      res.status(200).json(productsWithAvailableQuantity)
     } catch (err) {
       res.status(500).json({ errors: { server: "Server error" } })
     }

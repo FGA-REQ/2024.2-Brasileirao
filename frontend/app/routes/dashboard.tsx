@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [stockQuantity, setStockQuantity] = useState('');
+  const [availableQuantity, setAvailableQuantity] = useState('');
   const [inputImage, setInputImage] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
@@ -316,7 +317,7 @@ export default function Dashboard() {
                       </h3>
                       <div className='flex gap-4 text-sm text-gray-500'>
                         <span>R${product.price}</span>
-                        <span>Quanditdade disponível: {product.stockQuantity}</span>
+                        <span>Quantidade disponível: {product.availableQuantity}</span>
                       </div>
                     </div>
                   </Link>
