@@ -13,6 +13,7 @@ model User {
   email     String    @unique
   password  String
   rentals   Rental[]  // <-- Add this field for the reverse relation
+  role      Role      @default(CLIENT)
 }
 
 model Product {
@@ -38,4 +39,9 @@ model Rental {
 
   user        User     @relation(fields: [userId], references: [id])
   product     Product  @relation(fields: [productId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  CLIENT
 }
