@@ -42,3 +42,4 @@ nav:
       - Requisitos: doc-visao/Requisitos.md
       - Diagramas: modelagemdeprocessos.md
   - User Stories - MPV: us.md
+  - DoR & DoD: dor_dod.md
