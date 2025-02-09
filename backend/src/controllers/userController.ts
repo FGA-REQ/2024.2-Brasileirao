@@ -104,4 +104,35 @@ export default class UserController {
       return res.status(500).json({ errors: { server: "Server error" } })
     }
   }
+
+  changeRole = async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.body
+
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      })
+
+      if (!user) {
+        return res.status(404).json({ errors: { user: "User not found" } })
+      }
+
+      const newRole = user.role === "CLIENT" ? "ADMIN" : "CLIENT"
+
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: { role: newRole },
+      })
+
+      return res.status(200).json({
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+      })
+    } catch (err) {
+      console.error("Change role error:", err)
+      return res.status(500).json({ errors: { server: "Server error" } })
+    }
+  }
 }
